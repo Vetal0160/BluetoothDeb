@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BlueToothDeb</string>
+    <string name="action_bluetooth">on/off</string>
+    <string name="select_device">Выбор устройства</string>
+    <string name="search_message">Поиск новых устройств…</string>
+    <string name="title_paired_devices">Известные устройства</string>
+    <string name="title_other_devices">Новые устройства</string>
+    <string name="empty_device_name">&lt;Новое устройство&gt;</string>
+    <string name="none_found">Не найдено</string>
+    <string name="none_paired">Нет известных устройств</string>
+    <string name="V1">1</string>
+    <string name="scan">Scan</string>
+    <string name="Clear">Clear</string>
+    <string name="stop">Stop</string>
+    <string name="play">Play</string>
+    <string name="graff">Graff</string>
+    <string name="Back">Back</string>
+</resources>

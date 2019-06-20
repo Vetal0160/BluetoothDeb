@@ -39,8 +39,8 @@ public class GraphView extends MainActivity {
         layout = (LinearLayout) findViewById(R.id.LinearLayout);
         BtnGr = (Button) findViewById(R.id.Back);
         if (mChart == null) {
-            initChart();
-            addSampleData();
+                initChart();
+           // addSampleData();
             mChart = ChartFactory.getBarChartView(this, mDataset, mRenderer, BarChart.Type.DEFAULT);
             layout.addView(mChart);
         } else {
@@ -65,57 +65,74 @@ public class GraphView extends MainActivity {
         View.OnClickListener oclBtnGr = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                mRenderer.removeAllRenderers();
+                initChart();
+                mChart.repaint();
+               // finish();
             }
         };
         BtnGr.setOnClickListener(oclBtnGr);
     }
+        public  void initChart() {
+            mDataset.clear();
+            mCurrentSeries = new XYSeries("");
+            mDataset.addSeries(mCurrentSeries);
+            XYSeriesRenderer mCurrentRenderer = new XYSeriesRenderer();
+            mCurrentRenderer.setChartValuesTextSize(20);
+            /*mCurrentRenderer.setColor(Color.BLACK);*/
+            mCurrentRenderer.setChartValuesTextAlign(Paint.Align.CENTER);
+            mCurrentRenderer.setFillPoints(false);
+            mCurrentRenderer.setLineWidth(5);
 
-    public void initChart() {
-        mCurrentSeries = new XYSeries("");
-        mDataset.addSeries(mCurrentSeries);
-        XYSeriesRenderer mCurrentRenderer = new XYSeriesRenderer();
-        mCurrentRenderer.setChartValuesTextSize(20);
-        mCurrentRenderer.setColor(Color.BLACK);
-        mCurrentRenderer.setChartValuesTextAlign(Paint.Align.CENTER);
-        mCurrentRenderer.setFillPoints(false);
-        mCurrentRenderer.setLineWidth(5);
+            mRenderer.addSeriesRenderer(mCurrentRenderer);
+            mRenderer.setBarSpacing(1);
+            mRenderer.setXLabels(30);
+            mRenderer.setYLabels(30);
+            mRenderer.setXAxisMin(0);
+            mRenderer.setXAxisMax(60);
+            mRenderer.setYAxisMin(2);
+            mRenderer.setYAxisMax(4.5);
+            mRenderer.setLabelsTextSize(30);
+            mRenderer.setYLabelsColor(0, Color.RED);
+            mRenderer.setXLabelsColor(Color.RED);
+            mRenderer.setYAxisAlign(Paint.Align.LEFT, 0);
+            mRenderer.setYLabelsAlign(Paint.Align.RIGHT, 0);
+            mRenderer.setShowGridY(true);
+            mRenderer.setShowGridX(true);
+            mRenderer.setApplyBackgroundColor(true);
+            mRenderer.setMarginsColor(Color.WHITE);
+            mRenderer.setMargins(new int[]{0, 50, 0, 50});
+            mRenderer.setBarSpacing(0.15);
+            mRenderer.setPanLimits(new double[]{0, 160, 2, 5});
+            mRenderer.setZoomLimits(new double[]{0, 160, 2, 5});
+            mRenderer.setClickEnabled(true);
+            mRenderer.setShowLegend(false);
+            mRenderer.setBarWidth(30);
+                    for (int i = 1; i < 160; i++) {
+                        if (ArrayBattery[i][1] != 0) {
+                            if (ArrayBattery[1][1] <= 3.5) {
 
-        mRenderer.addSeriesRenderer(mCurrentRenderer);
-        mRenderer.setBarSpacing(1);
-        mRenderer.setXLabels(30);
-        mRenderer.setYLabels(30);
-        mRenderer.setXAxisMin(0);
-        mRenderer.setXAxisMax(60);
-        mRenderer.setYAxisMin(2);
-        mRenderer.setYAxisMax(4.5);
-        mRenderer.setLabelsTextSize(30);
-        mRenderer.setYLabelsColor(0, Color.RED);
-        mRenderer.setXLabelsColor(Color.RED);
-        mRenderer.setYAxisAlign(Paint.Align.LEFT, 0);
-        mRenderer.setYLabelsAlign(Paint.Align.RIGHT, 0);
-        mRenderer.setShowGridY(true);
-        mRenderer.setShowGridX(true);
-        mRenderer.setApplyBackgroundColor(true);
-        mRenderer.setMarginsColor(Color.WHITE);
-        mRenderer.setMargins(new int[]{0, 50, 0, 50});
-        mRenderer.setBarSpacing(0.15);
-        mRenderer.setPanLimits(new double[]{0, 160, 2, 5});
-        mRenderer.setZoomLimits(new double[]{0, 160, 2, 5});
-        mRenderer.setClickEnabled(true);
-        mRenderer.setShowLegend(false);
-        mRenderer.setBarWidth(30);
+                                mCurrentRenderer.setColor(Color.BLACK);
+                                mCurrentSeries.add(ArrayBattery[i][0], ArrayBattery[i][1]);
+                            } else {
+                                mCurrentRenderer.setColor(Color.RED);
+                                mCurrentSeries.add(ArrayBattery[i][0], ArrayBattery[i][1]);
+                            }
+                        }
+                    }
     }
-
-    public void addSampleData() {
+  /*  public void addSampleData() {
         runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
                 for (int i = 1; i < 160; i++)
+                  *//*  if (ArrayBattery[i][1]<= 3.5){
+                        mCurrentRenderer.setColor(Color.BLACK);
+                    }*//*
                     mCurrentSeries.add(ArrayBattery[i][0], ArrayBattery[i][1]);
             }
         });
 
-    }
+    }*/
 }

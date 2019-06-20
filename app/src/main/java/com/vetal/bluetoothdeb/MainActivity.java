@@ -349,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
                         ArrayBattery[Buff_Mes[3]][0] = Buff_Mes[3];
                         ArrayBattery[Buff_Mes[3]][1] = (float) ParsingVoltage(Buff_Mes[4]);
                         ArrayBattery[Buff_Mes[3]][2] = ParsingTmp(Buff_Mes[5]);
-
+                        //GraphView.initChart();
                     }
                     break;
                     default: {

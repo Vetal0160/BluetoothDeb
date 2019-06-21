@@ -26,6 +26,7 @@ public class GraphView extends MainActivity {
     private XYSeries mCurrentSeries;
     LinearLayout layout;
     Button BtnGr;
+    Thread myThreadGraph;
 
 
     @Override
@@ -46,6 +47,8 @@ public class GraphView extends MainActivity {
         } else {
             mChart.repaint();
         }
+        myThreadGraph = new Graph();
+        myThreadGraph.start();
         mChart.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Toast.makeText(GraphView.this, "ON CLICK", Toast.LENGTH_SHORT).show();
@@ -65,15 +68,13 @@ public class GraphView extends MainActivity {
         View.OnClickListener oclBtnGr = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mRenderer.removeAllRenderers();
-                initChart();
-                mChart.repaint();
-               // finish();
+                finish();
             }
         };
         BtnGr.setOnClickListener(oclBtnGr);
     }
-        public  void initChart() {
+        public void initChart() {
+            mRenderer.removeAllRenderers();
             mDataset.clear();
             mCurrentSeries = new XYSeries("");
             mDataset.addSeries(mCurrentSeries);
@@ -84,6 +85,9 @@ public class GraphView extends MainActivity {
             mCurrentRenderer.setFillPoints(false);
             mCurrentRenderer.setLineWidth(5);
 
+          /*  mRenderer.getSeriesRendererAt(0).setGradientEnabled(true);
+            mRenderer.getSeriesRendererAt(0).setGradientStart(0, Color.rgb(025, 117, 025));
+            mRenderer.getSeriesRendererAt(0).setGradientStop(3.5, Color.rgb(94, 158, 94));*/
             mRenderer.addSeriesRenderer(mCurrentRenderer);
             mRenderer.setBarSpacing(1);
             mRenderer.setXLabels(30);
@@ -108,31 +112,34 @@ public class GraphView extends MainActivity {
             mRenderer.setClickEnabled(true);
             mRenderer.setShowLegend(false);
             mRenderer.setBarWidth(30);
-                    for (int i = 1; i < 160; i++) {
-                        if (ArrayBattery[i][1] != 0) {
-                            if (ArrayBattery[1][1] <= 3.5) {
 
-                                mCurrentRenderer.setColor(Color.BLACK);
-                                mCurrentSeries.add(ArrayBattery[i][0], ArrayBattery[i][1]);
-                            } else {
-                                mCurrentRenderer.setColor(Color.RED);
-                                mCurrentSeries.add(ArrayBattery[i][0], ArrayBattery[i][1]);
-                            }
+                if (ArrayBattery[1][1] != 0) {
+                    if (ArrayBattery[1][1] <= 3.5) {
+                        mCurrentRenderer.setColor(Color.BLACK);
+                        mCurrentSeries.add(ArrayBattery[1][0]+1, ArrayBattery[1][1]);
+                        if (mChart != null) {
+                            mChart.repaint();//обновление граф.
+                        }
+                    } else {
+                        mCurrentRenderer.setColor(Color.RED);
+                        mCurrentSeries.add(ArrayBattery[1][0]+1, ArrayBattery[1][1]);
+                        if (mChart != null) {
+                            mChart.repaint();//обновление граф.
                         }
                     }
-    }
-  /*  public void addSampleData() {
-        runOnUiThread(new Runnable() {
-
-            @Override
-            public void run() {
-                for (int i = 1; i < 160; i++)
-                  *//*  if (ArrayBattery[i][1]<= 3.5){
-                        mCurrentRenderer.setColor(Color.BLACK);
-                    }*//*
-                    mCurrentSeries.add(ArrayBattery[i][0], ArrayBattery[i][1]);
+            }try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                //Error
             }
-        });
-
-    }*/
+        }
+  class Graph extends Thread {
+      public void run() {
+          while (true) {
+              for (int i = 1; i < 5; i++) {
+              initChart();
+          }
+          }
+      }
+  }
 }

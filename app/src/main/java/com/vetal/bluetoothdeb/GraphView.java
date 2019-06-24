@@ -141,7 +141,7 @@ public class GraphView extends MainActivity {
         if (mass[number] != 0) {
             if (mass[number] <= med/6) {
              //   initChart2();
-                mCurrentRenderer.setColor(Color.BLACK);
+              //  mCurrentRenderer.setColor(Color.BLACK);
               //  mRenderer.getSeriesRendererAt(0).setGradientStart(med/6, Color.BLACK);
               //  mRenderer.getSeriesRendererAt(0).setGradientStop(med/6, Color.BLUE);
                 mCurrentSeries.add(number, mass[number]);

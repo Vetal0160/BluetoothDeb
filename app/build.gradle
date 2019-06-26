@@ -29,8 +29,11 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.support:gridlayout-v7:28.0.0'
+<<<<<<< HEAD
     implementation 'com.github.PhilJay:MPAndroidChart:v2.0.9'
 }
 repositories {
     maven { url "https://jitpack.io" }
+=======
+>>>>>>> 183587753fc24632feb3dd0c8f1b2e6b4e1c218a
 }

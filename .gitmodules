@@ -1,0 +1,3 @@
+[submodule "achartengine"]
+	path = achartengine
+	url = https://github.com/ddanny/achartengine

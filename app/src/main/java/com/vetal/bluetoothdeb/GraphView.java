@@ -19,7 +19,9 @@ public class GraphView extends MainActivity {
         setContentView(R.layout.graph_view);
 
         chart = (BarChart) findViewById(R.id.chart);
+
         Graph();
+
         myThreadGraph = new Draw();
         myThreadGraph.start();
     }
@@ -42,28 +44,7 @@ public class GraphView extends MainActivity {
          //Error
      }
  }
-/*
-                if (ArrayBattery[1][1] != 0) {
-                    if (ArrayBattery[1][1] <= 3.5) {
-                        mCurrentRenderer.setColor(Color.BLACK);
-                        mCurrentSeries.add(ArrayBattery[1][0]+1, ArrayBattery[1][1]);
-                        if (mChart != null) {
-                            mChart.repaint();//обновление граф.
-                        }
-                    } else {
-                        mCurrentRenderer.setColor(Color.RED);
-                        mCurrentSeries.add(ArrayBattery[1][0]+1, ArrayBattery[1][1]);
-                        if (mChart != null) {
-                            mChart.repaint();//обновление граф.
-                        }
-                    }
-            }try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                //Error
-            }
-        }
-        */
+
   class Draw extends Thread {
       public void run() {
           while (true) {

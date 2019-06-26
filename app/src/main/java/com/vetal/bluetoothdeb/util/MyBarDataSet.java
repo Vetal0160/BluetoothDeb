@@ -5,13 +5,11 @@ import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.List;
 
-/**
- * Created by linchpinub4 on 22/1/16.
- */
+
 public class MyBarDataSet extends BarDataSet {
 
 
-    public MyBarDataSet(List<BarEntry> yVals, String label) {
+    MyBarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
     }
 

@@ -8,7 +8,15 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/chart"
         android:layout_width="wrap_content"
-        android:layout_height="250dp"
+        android:layout_height="150dp"
+        android:background="@android:color/background_light" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/charttmp"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_below="@+id/chart"
+        android:layout_marginTop="15dp"
         android:background="@android:color/background_light" />
 
 </RelativeLayout>

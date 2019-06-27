@@ -78,7 +78,7 @@ public class MPUtil {
         yAxis.setAxisLineWidth(2);  // y ashix line size
 
         data.setValueTextColor(context.getResources().getColor(android.R.color.black)); // bar data level
-        data.setValueTextSize(8); // bar data size
+        data.setValueTextSize(6); // bar data size
 
         // bar data size
 
@@ -86,10 +86,10 @@ public class MPUtil {
         chart.setDescription("");
         chart.invalidate();
         chart.setHorizontalScrollBarEnabled(true);
-        chart.setVisibleXRange(20);
+        chart.setVisibleXRange(50);
         chart.getAxisLeft().setStartAtZero(false);
         chart.getAxisRight().setStartAtZero(false);
-        chart.getAxisLeft().setAxisMinValue(2);
+        chart.getAxisLeft().setAxisMinValue((float) 2.5);
         //  chart.setVisibleYRange(300, YAxis.AxisDependency.RIGHT);
         chart.getLegend().setEnabled(false);
         chart.setDrawGridBackground(false);

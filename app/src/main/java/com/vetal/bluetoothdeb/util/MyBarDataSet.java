@@ -2,6 +2,7 @@ package com.vetal.bluetoothdeb.util;
 
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.vetal.bluetoothdeb.GraphView;
 
 import java.util.List;
 
@@ -18,14 +19,14 @@ public class MyBarDataSet extends BarDataSet {
     {
         float indexVal = getEntryForXIndex(index).getVal();
 
-        if (indexVal <= 3.45)
+        if (indexVal <= GraphView.med/GraphView.del + 0.05 && indexVal >= GraphView.med/GraphView.del - 0.05)
             return mColors.get(0);
-        else if (indexVal > 3.46 && indexVal <= 3.5)
+        else if (indexVal <= GraphView.med/GraphView.del + 0.07)
             return mColors.get(1);
-        else if (indexVal > 3.51 && indexVal <= 3.55)
-            return mColors.get(2);
-        else
+        else if (indexVal >= GraphView.med/GraphView.del - 0.07)
             return mColors.get(3);
+
+        return index;
     }
 
 }

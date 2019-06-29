@@ -6,24 +6,22 @@ import com.vetal.bluetoothdeb.GraphView;
 
 import java.util.List;
 
+public class MyBarDataSetTmp extends BarDataSet {
 
-public class MyBarDataSet extends BarDataSet {
 
-
-    MyBarDataSet(List<BarEntry> yVals, String label) {
+    MyBarDataSetTmp(List<BarEntry> yVals, String label) {
         super(yVals, label);
     }
 
     @Override
-    public int getColor(int index)
-    {
+    public int getColor(int index) {
         float indexVal = getEntryForXIndex(index).getVal();
 
-        if (indexVal <= GraphView.med/GraphView.del + 0.05 && indexVal >= GraphView.med/GraphView.del - 0.05)
+        if (indexVal <= GraphView.medtmp/GraphView.deltmp + 1 && indexVal >= GraphView.med/GraphView.del - 1)
             return mColors.get(0);
-        else if (indexVal <= GraphView.med/GraphView.del + 0.07)
+        else if (indexVal <= GraphView.medtmp/GraphView.deltmp + 2)
             return mColors.get(1);
-        else if (indexVal >= GraphView.med/GraphView.del - 0.07)
+        else if (indexVal >= GraphView.medtmp/GraphView.deltmp - 2)
             return mColors.get(3);
 
         return index;

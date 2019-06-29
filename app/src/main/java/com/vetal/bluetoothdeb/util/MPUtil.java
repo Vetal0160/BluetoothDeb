@@ -43,6 +43,30 @@ public class MPUtil {
         return dataSets;
     }
 
+    public static ArrayList<BarDataSet> getDataSetTmp(Context context, List<Float> dataList) {
+
+        ArrayList<BarDataSet> dataSets = new ArrayList<>();
+
+        ArrayList<BarEntry> valueSet = new ArrayList<>();
+
+        for (int i = 0; i < dataList.size(); i++) {
+            valueSet.add(new BarEntry(dataList.get(i), i));
+        }
+        int[] colors = {context.getResources().getColor(R.color.color1),
+                context.getResources().getColor(R.color.color2),
+                context.getResources().getColor(R.color.color3),
+                context.getResources().getColor(R.color.color4)};
+
+        BarDataSet barDataSetTmp = new MyBarDataSetTmp(valueSet, "");
+        barDataSetTmp.setColors(colors);
+        barDataSetTmp.setValueTextSize(textSize);
+        barDataSetTmp.setBarSpacePercent(3);
+
+        dataSets.add(barDataSetTmp);
+
+        return dataSets;
+    }
+
     public static ArrayList<String> getXAxisValues(int dataSize) {
 
         ArrayList<String> xAxis = new ArrayList<>();
@@ -86,7 +110,7 @@ public class MPUtil {
         chart.setDescription("");
         chart.invalidate();
         chart.setHorizontalScrollBarEnabled(true);
-        chart.setVisibleXRange(50);
+        chart.setVisibleXRange(160);
         chart.getAxisLeft().setStartAtZero(false);
         chart.getAxisRight().setStartAtZero(false);
         chart.getAxisLeft().setAxisMinValue((float) 2.5);

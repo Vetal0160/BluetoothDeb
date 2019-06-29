@@ -20,8 +20,14 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import static android.R.layout.simple_list_item_1;
@@ -32,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int MAX_IDX_BUFF_FIFO = 100;
     private static final int MAX_IDX_BUFF_MES = 8;
-    private static final int MAX_IDX_ARAYBATTERY = 160;
+    private static final int MAX_IDX_ARAYBATTERY = 161;
     private UUID myUUID;
 
     public short[] Buffer_FIFO = new short[MAX_IDX_BUFF_FIFO];
     public short[] Buff_Mes = new short[MAX_IDX_BUFF_MES];
     protected static float[][] ArrayBattery = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
     public int Idx_Buf_In, IdxWrite_Buf_Fifo, IdxRead_Buf_Fifo, Idx_Buf_Mes, Size_Buf_In = 0;
+    public int delay;
 
     BluetoothAdapter bluetoothAdapter;
     ArrayList<String> pairedDeviceArrayList;
@@ -48,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> pairedDeviceAdapter;
     ThreadConnectBTdevice myThreadConnectBTdevice;
     ThreadConnected myThreadConnected;
-    Thread myThreadRead;
-
+    Thread myThreadRead,myThreadViewData;
+    Timer t = new Timer();
+    public ViewDataLog mMyTimerTask;
     boolean Pause,Pause2;
 
     @Override
@@ -130,6 +138,16 @@ public class MainActivity extends AppCompatActivity {
                 msg.append("№:").append(Nmb).append(" ").append("U:").append(Voltage).append(" ").append("t:").append(Tmp).append("\n");
                 //  Вывод на экран
                 myTextView.append(msg);
+            }
+        });
+    }
+    void EndLine() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                StringBuilder end = new StringBuilder();
+                end.append(new SimpleDateFormat("HH:mm:ss").format(Calendar.getInstance().getTime())).append("\n");
+                myTextView.append(end);
             }
         });
     }
@@ -252,6 +270,8 @@ public class MainActivity extends AppCompatActivity {
                 //Создание потока
                 myThreadRead = new ReadData();
                 myThreadRead.start();
+                myThreadViewData = new ViewData();
+                myThreadViewData.start();
             }
         }
 
@@ -340,16 +360,17 @@ public class MainActivity extends AppCompatActivity {
                     //Проверка второго байта
                     break;
                     case 7: {
+                        delay = 1700 - (Buff_Mes[3] * 10);
                         Buff_Mes[Idx_Buf_Mes] = Buffer_FIFO[IdxRead_Buf_Fifo];
                         Idx_Buf_Mes = 0;
-                        if (!Pause) {
+                       /* if (!Pause) {
                             appendLog(String.valueOf(Buff_Mes[3]), String.valueOf(ParsingVoltage(Buff_Mes[4])), String.valueOf(ParsingTmp(Buff_Mes[5]))); //Отправка данных
-                        }
+                        }*/
                         //Запись данных в массив
                         ArrayBattery[Buff_Mes[3]][0] = Buff_Mes[3];
                         ArrayBattery[Buff_Mes[3]][1] = (float) ParsingVoltage(Buff_Mes[4]);
                         ArrayBattery[Buff_Mes[3]][2] = ParsingTmp(Buff_Mes[5]);
-                        //GraphView.initChart();
+
                     }
                     break;
                     default: {
@@ -377,4 +398,34 @@ public class MainActivity extends AppCompatActivity {
 
         return (short) (Math.abs(Tmp) - 82);// Формула получения темпрературы
     }
+    public class ViewDataLog extends TimerTask {
+        @Override
+        public void run() {
+            if (!Pause) {
+                for (int i = 1; i < 161; i++) {
+                    if (ArrayBattery[i][0] > 0) {
+                        appendLog(String.valueOf((int) ArrayBattery[i][0]), String.valueOf(ArrayBattery[i][1]), String.valueOf((int) ArrayBattery[i][2]));
+                    }
+                }
+                EndLine();
+            }
+        }
+    }
+    public class ViewData extends Thread {
+
+        @Override
+        public void run () {
+            while (true) {
+                    mMyTimerTask = new ViewDataLog();
+                    t.schedule(mMyTimerTask, delay);
+                try {
+                    Thread.sleep(2300 + delay);
+                } catch (InterruptedException e) {
+                    //Error
+                }
+            }
+        }
+
+    }
+
 } // END

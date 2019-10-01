@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     public short[] Buffer_FIFO = new short[MAX_IDX_BUFF_FIFO];
     public short[] Buff_Mes = new short[MAX_IDX_BUFF_MES];
-    protected static float[][] ArrayBattery = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
+    public static float[][] ArrayBattery = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
     public int Idx_Buf_In, IdxWrite_Buf_Fifo, IdxRead_Buf_Fifo, Idx_Buf_Mes, Size_Buf_In = 0;
     public int delay;
 
@@ -330,7 +330,13 @@ public class MainActivity extends AppCompatActivity {
                 if (IdxWrite_Buf_Fifo == MAX_IDX_BUFF_FIFO)
                     IdxWrite_Buf_Fifo = 0;
                 if (IdxWrite_Buf_Fifo == IdxRead_Buf_Fifo) {
-                    Toast.makeText(MainActivity.this, "Ошибка!!!индекс считывания равен индексу записи!", Toast.LENGTH_LONG).show();
+                    /*runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "Ошибка!!!индекс считывания равен индексу записи!", Toast.LENGTH_LONG).show();
+                        }
+                    });*/
                 }
             }
             while (Idx_Buf_In < Size_Buf_In);
@@ -342,7 +348,13 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             while (true) {
                 while (IdxRead_Buf_Fifo == IdxWrite_Buf_Fifo) {
-                    Toast.makeText(MainActivity.this, "Ждем Данные", Toast.LENGTH_LONG).show(); //Ловушка
+                   /* runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "Ждем Данные", Toast.LENGTH_LONG).show(); //Ловушка
+                        }
+                    });*/
                 }
                 switch (Idx_Buf_Mes) {
                     case 0: {
@@ -370,6 +382,7 @@ public class MainActivity extends AppCompatActivity {
                         ArrayBattery[Buff_Mes[3]][0] = Buff_Mes[3];
                         ArrayBattery[Buff_Mes[3]][1] = (float) ParsingVoltage(Buff_Mes[4]);
                         ArrayBattery[Buff_Mes[3]][2] = ParsingTmp(Buff_Mes[5]);
+                        ArrayBattery[Buff_Mes[3]][3] = 4;
 
                     }
                     break;

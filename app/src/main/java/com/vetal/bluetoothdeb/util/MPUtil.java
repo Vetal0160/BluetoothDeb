@@ -31,7 +31,9 @@ public class MPUtil {
         int[] colors = {context.getResources().getColor(R.color.color1),
                 context.getResources().getColor(R.color.color2),
                 context.getResources().getColor(R.color.color3),
-                context.getResources().getColor(R.color.color4)};
+                context.getResources().getColor(R.color.color4),
+                context.getResources().getColor(R.color.color5),
+                context.getResources().getColor(R.color.color6)};
 
         BarDataSet barDataSet = new MyBarDataSet(valueSet, "");
         barDataSet.setColors(colors);

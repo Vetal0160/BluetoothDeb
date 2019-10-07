@@ -382,7 +382,7 @@ public class MainActivity extends AppCompatActivity {
                         ArrayBattery[Buff_Mes[3]][0] = Buff_Mes[3];
                         ArrayBattery[Buff_Mes[3]][1] = (float) ParsingVoltage(Buff_Mes[4]);
                         ArrayBattery[Buff_Mes[3]][2] = ParsingTmp(Buff_Mes[5]);
-                        ArrayBattery[Buff_Mes[3]][3] = 4;
+                        ArrayBattery[Buff_Mes[3]][3] = 0;
 
                     }
                     break;
@@ -431,6 +431,11 @@ public class MainActivity extends AppCompatActivity {
             while (true) {
                     mMyTimerTask = new ViewDataLog();
                     t.schedule(mMyTimerTask, delay);
+               /* for (int i = 1; i < ArrayBattery.length; i++) {
+                    if (ArrayBattery[i][0] > 0) {
+                        ArrayBattery[Buff_Mes[3]][3] = 4;
+                    }
+                }*/
                 try {
                     Thread.sleep(2300 + delay);
                 } catch (InterruptedException e) {

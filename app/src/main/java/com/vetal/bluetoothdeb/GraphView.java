@@ -17,6 +17,7 @@ public class GraphView extends MainActivity {
     public static float med,medtmp;
     public static int del,deltmp;
     public static double[][] masss = {{3.57,4},{3.54,4},{3.51,3},{3.49,3},{3.51,4},{3.68,4},{3.57,2},{3.54,3},{3.51,1},{3.49,3},{3.51,4},{3.68,4}};
+    public float[][] ArrayBattery2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +36,10 @@ public class GraphView extends MainActivity {
         med = 0;
         del = 0;
         dataListVoltage = new ArrayList<>();
-        for (int i = 1; i < ArrayBattery.length; i++) {
-            dataListVoltage.add((float) ArrayBattery[i][1]);
-            if (ArrayBattery[i][1] > 0) {
-                med += ArrayBattery[i][1];
+        for (int i = 1; i < 10; i++) {
+            dataListVoltage.add((float) ArrayBattery2[i][1]);
+            if (ArrayBattery2[i][1] > 0) {
+                med += ArrayBattery2[i][1];
                 del++;
             }
         }
@@ -47,10 +48,10 @@ public class GraphView extends MainActivity {
         medtmp = 0;
         deltmp = 0;
         dataListTmp = new ArrayList<>();
-        for (int i = 1; i < ArrayBattery.length; i++) {
-            dataListTmp.add(ArrayBattery[i][2]);
-            if (ArrayBattery[i][0] > 0) {
-                medtmp += ArrayBattery[i][2];
+        for (int i = 1; i < 10; i++) {
+            dataListTmp.add(ArrayBattery2[i][2]);
+            if (ArrayBattery2[i][0] > 0) {
+                medtmp += ArrayBattery2[i][2];
                 deltmp++;
             }
         }
@@ -59,32 +60,51 @@ public class GraphView extends MainActivity {
      runOnUiThread(new Runnable() {
          @Override
          public void run() {
-     BarData barDataVoltage = new BarData(MPUtil.getXAxisValues(160), MPUtil.getDataSet(GraphView.this, dataListVoltage));
+     BarData barDataVoltage = new BarData(MPUtil.getXAxisValues(10), MPUtil.getDataSet(GraphView.this, dataListVoltage));
      MPUtil.drawChart(GraphView.this, chartvoltage, barDataVoltage);
 
-     BarData barDataTmp = new BarData(MPUtil.getXAxisValues(160), MPUtil.getDataSetTmp(GraphView.this, dataListTmp));
+     BarData barDataTmp = new BarData(MPUtil.getXAxisValues(10), MPUtil.getDataSetTmp(GraphView.this, dataListTmp));
      MPUtil.drawChart(GraphView.this, charttmp, barDataTmp);
          }
      });
-     try {
+    /* try {
          Thread.sleep(4000);
      } catch (InterruptedException e) {
          //Error
-     }
+     }*/
  }
 
   class Draw extends Thread {
       public void run() {
           while (true) {
+              ArrayBattery2 = ArrayBattery.clone();
               addListVoltage();
               addListTmp();
               Graph();
-              for (int i = 1; i < ArrayBattery.length; i++) {
+
+              try {
+                  Thread.sleep(2000);
+              } catch (InterruptedException e) {
+                  //Error
+              }
+              for (int i = 1; i < ArrayBattery2.length; i++) {
+                  if (ArrayBattery2[i][1] > 0) {
+                      if (ArrayBattery2[i][3] == 0)
+                          ArrayBattery2[i][3]++;
+                      else if (ArrayBattery2[i][3] == 1)
+                          ArrayBattery2[i][3]++;
+                      else if (ArrayBattery2[i][3] == 2)
+                          ArrayBattery2[i][3]++;
+                      else if (ArrayBattery2[i][3] == 3)
+                          ArrayBattery2[i][3]++;
+                  }
+              }
+            /*  for (int i = 1; i < ArrayBattery.length; i++) {
                   dataListTmp.add(ArrayBattery[i][2]);
                   if (ArrayBattery[i][0] > 0) {
                       ArrayBattery[i][3]--;
-                  }
-              }
+                  }*/
+            //  }
           }
           }
       }

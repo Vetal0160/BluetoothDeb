@@ -67,11 +67,6 @@ public class GraphView extends MainActivity {
      MPUtil.drawChart(GraphView.this, charttmp, barDataTmp);
          }
      });
-    /* try {
-         Thread.sleep(4000);
-     } catch (InterruptedException e) {
-         //Error
-     }*/
  }
 
   class Draw extends Thread {
@@ -83,7 +78,7 @@ public class GraphView extends MainActivity {
               Graph();
 
               try {
-                  Thread.sleep(2000);
+                  Thread.sleep(3990);
               } catch (InterruptedException e) {
                   //Error
               }
@@ -97,15 +92,16 @@ public class GraphView extends MainActivity {
                           ArrayBattery2[i][3]++;
                       else if (ArrayBattery2[i][3] == 3)
                           ArrayBattery2[i][3]++;
+                      else if (ArrayBattery2[i][3] == 4)
+                          ArrayBattery2[i][3]++;
+                      else if (ArrayBattery2[i][3] == 5)
+                          ArrayBattery2[i][3]++;
+                      else if (ArrayBattery2[i][3] == 6)
+                          ArrayBattery2[i][3]++;
                   }
               }
-            /*  for (int i = 1; i < ArrayBattery.length; i++) {
-                  dataListTmp.add(ArrayBattery[i][2]);
-                  if (ArrayBattery[i][0] > 0) {
-                      ArrayBattery[i][3]--;
-                  }*/
-            //  }
-          }
+
           }
       }
+  }
 }

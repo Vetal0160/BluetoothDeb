@@ -28,12 +28,19 @@ public class MPUtil {
         for (int i = 0; i < dataList.size(); i++) {
             valueSet.add(new BarEntry(dataList.get(i), i));
         }
-        int[] colors = {context.getResources().getColor(R.color.color1),
+        int[] colors = {context.getResources().getColor(R.color.colorPrimaryDark),
+                context.getResources().getColor(R.color.color1),
                 context.getResources().getColor(R.color.color2),
                 context.getResources().getColor(R.color.color3),
                 context.getResources().getColor(R.color.color4),
-                context.getResources().getColor(R.color.color5),
-                context.getResources().getColor(R.color.color6)};
+                context.getResources().getColor(R.color.color10),
+                context.getResources().getColor(R.color.color11),
+                context.getResources().getColor(R.color.color12),
+                context.getResources().getColor(R.color.color13),
+                context.getResources().getColor(R.color.color20),
+                context.getResources().getColor(R.color.color21),
+                context.getResources().getColor(R.color.color22),
+                context.getResources().getColor(R.color.color23)};
 
         BarDataSet barDataSet = new MyBarDataSet(valueSet, "");
         barDataSet.setColors(colors);
@@ -54,12 +61,19 @@ public class MPUtil {
         for (int i = 0; i < dataList.size(); i++) {
             valueSet.add(new BarEntry(dataList.get(i), i));
         }
-        int[] colors = {context.getResources().getColor(R.color.color1),
+        int[] colors = {context.getResources().getColor(R.color.colorPrimaryDark),
+                context.getResources().getColor(R.color.color1),
                 context.getResources().getColor(R.color.color2),
                 context.getResources().getColor(R.color.color3),
                 context.getResources().getColor(R.color.color4),
-                context.getResources().getColor(R.color.color5),
-                context.getResources().getColor(R.color.color6)};
+                context.getResources().getColor(R.color.color10),
+                context.getResources().getColor(R.color.color11),
+                context.getResources().getColor(R.color.color12),
+                context.getResources().getColor(R.color.color13),
+                context.getResources().getColor(R.color.color20),
+                context.getResources().getColor(R.color.color21),
+                context.getResources().getColor(R.color.color22),
+                context.getResources().getColor(R.color.color23)};
 
         BarDataSet barDataSetTmp = new MyBarDataSetTmp(valueSet, "");
         barDataSetTmp.setColors(colors);

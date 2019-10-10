@@ -3,7 +3,7 @@ package com.vetal.bluetoothdeb.util;
 import android.content.Context;
 
 
-
+import com.vetal.bluetoothdeb.GraphView;
 import com.vetal.bluetoothdeb.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -15,7 +15,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MPUtil {
+public class MPUtil{
 
     private static int textSize = 10;
 
@@ -129,14 +129,12 @@ public class MPUtil {
         chart.invalidate();
         chart.notifyDataSetChanged();
         chart.setHorizontalScrollBarEnabled(true);
-        chart.setVisibleXRange(160);
+        chart.setVisibleXRange(GraphView.ViewSize);
         chart.getAxisLeft().setStartAtZero(false);
         chart.getAxisRight().setStartAtZero(false);
         chart.getAxisLeft().setAxisMinValue((float) 2.5);
-        //  chart.setVisibleYRange(300, YAxis.AxisDependency.RIGHT);
         chart.getLegend().setEnabled(false);
         chart.setDrawGridBackground(false);
         chart.setDoubleTapToZoomEnabled(false);
     }
-
 }

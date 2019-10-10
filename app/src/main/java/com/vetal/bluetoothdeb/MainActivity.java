@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public short[] Buffer_FIFO = new short[MAX_IDX_BUFF_FIFO];
     public short[] Buff_Mes = new short[MAX_IDX_BUFF_MES];
     public static float[][] ArrayBattery = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
+    public static float[][] ArrayBattery2 = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
     public int Idx_Buf_In, IdxWrite_Buf_Fifo, IdxRead_Buf_Fifo, Idx_Buf_Mes, Size_Buf_In = 0;
     public int delay;
 
@@ -379,10 +380,14 @@ public class MainActivity extends AppCompatActivity {
                             appendLog(String.valueOf(Buff_Mes[3]), String.valueOf(ParsingVoltage(Buff_Mes[4])), String.valueOf(ParsingTmp(Buff_Mes[5]))); //Отправка данных
                         }*/
                         //Запись данных в массив
-                        ArrayBattery[Buff_Mes[3]][0] = Buff_Mes[3];
-                        ArrayBattery[Buff_Mes[3]][1] = (float) ParsingVoltage(Buff_Mes[4]);
-                        ArrayBattery[Buff_Mes[3]][2] = ParsingTmp(Buff_Mes[5]);
-                        ArrayBattery[Buff_Mes[3]][3] = 0;
+                        try {
+                            ArrayBattery[Buff_Mes[3]][0] = Buff_Mes[3];
+                            ArrayBattery[Buff_Mes[3]][1] = (float) ParsingVoltage(Buff_Mes[4]);
+                            ArrayBattery[Buff_Mes[3]][2] = ParsingTmp(Buff_Mes[5]);
+                            ArrayBattery[Buff_Mes[3]][3] = 0;
+                        } catch (Exception e) {
+                            System.out.println("Something went wrong." +Buff_Mes[3] );
+                        }
 
                     }
                     break;
@@ -431,11 +436,6 @@ public class MainActivity extends AppCompatActivity {
             while (true) {
                     mMyTimerTask = new ViewDataLog();
                     t.schedule(mMyTimerTask, delay);
-               /* for (int i = 1; i < ArrayBattery.length; i++) {
-                    if (ArrayBattery[i][0] > 0) {
-                        ArrayBattery[Buff_Mes[3]][3] = 4;
-                    }
-                }*/
                 try {
                     Thread.sleep(2300 + delay);
                 } catch (InterruptedException e) {

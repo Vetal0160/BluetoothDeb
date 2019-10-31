@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public short[] Buff_Mes = new short[MAX_IDX_BUFF_MES];
     public static float[][] ArrayBattery = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
     public static float[][] ArrayBattery2 = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
+    public static float[][] ArrayBattery3 = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
     public int Idx_Buf_In, IdxWrite_Buf_Fifo, IdxRead_Buf_Fifo, Idx_Buf_Mes, Size_Buf_In = 0;
     public int delay;
 
@@ -277,7 +278,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        public void cancel() {
+        void cancel() {
 
             Toast.makeText(getApplicationContext(), "Close - BluetoothSocket", Toast.LENGTH_LONG).show();
 

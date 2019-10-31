@@ -15,4 +15,17 @@
     <string name="play">Play</string>
     <string name="graff">Graff</string>
     <string name="Back">Back</string>
+    <string name="set_miny">Set_minY</string>
+    <string name="set_min_y">Set_Min_Y</string>
+    <string name="set">Set</string>
+    <string name="back">Back</string>
+    <string name="get">get</string>
+    <string name="Set_maxy">Set_maxy</string>
+    <string name="set_max_bal">set_max_bal</string>
+    <string name="set_view">Set_view</string>
+    <string name="dinamic_mode">Dinamic Mode</string>
+    <string name="set_minytmp">set_minytmp</string>
+    <string name="set_maxytmp">Set_maxytmp</string>
+    <string name="set_max_baltmp">set_max_baltmp</string>
+    <string name="set_viewtmp">set_viewtmp</string>
 </resources>

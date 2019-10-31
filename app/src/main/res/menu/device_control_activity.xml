@@ -4,7 +4,7 @@
     tools:context=".GraphView">
 
     <item
-        android:id="@+id/pause"
+        android:id="@+id/menu_pause"
         android:title="pause"
         android:icon="@drawable/pause"
         android:orderInCategory="100"

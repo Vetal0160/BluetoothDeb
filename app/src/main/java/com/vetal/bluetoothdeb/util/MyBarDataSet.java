@@ -21,7 +21,12 @@ public class MyBarDataSet extends BarDataSet {
             case 0:
                 if (indexVal > 0) {
                     if (indexVal <= (GraphView.med / GraphView.del + 0.05) && indexVal >= (GraphView.med / GraphView.del - 0.05)) {
-                        MainActivity.ArrayBattery2[index + 1][4] = 0;
+                        if (indexVal == GraphView.min)
+                            return mColors.get(5);
+                        else  if (indexVal == GraphView.max){
+                            return mColors.get(6);
+                        }
+                        else
                         return mColors.get(1);
                     }
                     else if (indexVal < (GraphView.med / GraphView.del)) {
@@ -37,7 +42,13 @@ public class MyBarDataSet extends BarDataSet {
                 if (indexVal > 0) {
                     if (indexVal <= (GraphView.med / GraphView.del + 0.05) && indexVal >= (GraphView.med / GraphView.del - 0.05)) {
                         MainActivity.ArrayBattery2[index + 1][4] = 0;
-                        return mColors.get(1);
+                        if (indexVal == GraphView.min)
+                            return mColors.get(5);
+                        else  if (indexVal == GraphView.max){
+                            return mColors.get(6);
+                        }
+                        else
+                            return mColors.get(1);
                     }
                     else if (indexVal < (GraphView.med / GraphView.del)) {
                         MainActivity.ArrayBattery2[index + 1][4] = 1;

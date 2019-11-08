@@ -109,8 +109,10 @@ public class GraphView extends MainActivity {
         for (int i = 1; i < ArrayBattery2.length; i++) {
             dataListVoltage.add(ArrayBattery2[i][1]);
             if (ArrayBattery2[i][1] > 0) {
-                med += ArrayBattery2[i][1];
-                del++;
+                if (ArrayBattery2[i][3] < 2) {
+                    med += ArrayBattery2[i][1];
+                    del++;
+                }
             }
         }
     }
@@ -121,8 +123,10 @@ public class GraphView extends MainActivity {
         for (int i = 1; i < ArrayBattery2.length; i++) {
             dataListTmp.add(ArrayBattery2[i][2]);
             if (ArrayBattery2[i][2] > 0) {
-                medtmp += ArrayBattery2[i][2];
-                deltmp++;
+                if (ArrayBattery2[i][3] < 2) {
+                    medtmp += ArrayBattery2[i][2];
+                    deltmp++;
+                }
             }
         }
     }

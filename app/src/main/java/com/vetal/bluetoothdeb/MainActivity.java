@@ -4,11 +4,16 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,6 +25,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -38,16 +44,18 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_ENABLE_BT = 1;
     private static final int MAX_IDX_BUFF_FIFO = 100;
     private static final int MAX_IDX_BUFF_MES = 8;
-    private static final int MAX_IDX_ARAYBATTERY = 161;
+    private static final int MAX_IDX_ARRAYBATTERY = 161;
     private UUID myUUID;
 
     public short[] Buffer_FIFO = new short[MAX_IDX_BUFF_FIFO];
     public short[] Buff_Mes = new short[MAX_IDX_BUFF_MES];
-    public static float[][] ArrayBattery = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
-    public static float[][] ArrayBattery2 = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
-    public static float[][] ArrayBattery3 = new float[MAX_IDX_ARAYBATTERY][MAX_IDX_BUFF_MES];
+    public static float[][] ArrayBattery = new float[MAX_IDX_ARRAYBATTERY][MAX_IDX_BUFF_MES];
+    public static float[][] ArrayBattery2 = new float[MAX_IDX_ARRAYBATTERY][MAX_IDX_BUFF_MES];
     public int Idx_Buf_In, IdxWrite_Buf_Fifo, IdxRead_Buf_Fifo, Idx_Buf_Mes, Size_Buf_In = 0;
     public int delay;
+    public ViewDataLog mMyTimerTask;
+
+    boolean Pause, Pause2;
 
     BluetoothAdapter bluetoothAdapter;
     ArrayList<String> pairedDeviceArrayList;
@@ -57,18 +65,17 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> pairedDeviceAdapter;
     ThreadConnectBTdevice myThreadConnectBTdevice;
     ThreadConnected myThreadConnected;
-    Thread myThreadRead,myThreadViewData;
+    Thread myThreadRead, myThreadViewData;
     Timer t = new Timer();
-    public ViewDataLog mMyTimerTask;
-    boolean Pause,Pause2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Pause = false;
         final String UUID_STRING_WELL_KNOWN_SPP = "00001101-0000-1000-8000-00805F9B34FB";
+
+        Pause = false;
 
         BtnScan = (Button) findViewById(R.id.btnScan);
         BtnClear = (Button) findViewById(R.id.btnClear);
@@ -77,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         listViewPairedDevice = (ListView) findViewById(R.id.pairedlist);
         myTextView = (TextView) findViewById(R.id.textView);
         myTextView.setMovementMethod(new ScrollingMovementMethod());
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)) {
             Toast.makeText(this, "BLUETOOTH NOT support", Toast.LENGTH_LONG).show();
@@ -86,25 +94,26 @@ public class MainActivity extends AppCompatActivity {
 
         myUUID = UUID.fromString(UUID_STRING_WELL_KNOWN_SPP);
 
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
         if (bluetoothAdapter == null) {
             Toast.makeText(this, "Bluetooth is not supported on this hardware platform", Toast.LENGTH_LONG).show();
             finish();
             return;
         }
+
         View.OnClickListener oclBtnScan = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setup();
             }
         };
+
         View.OnClickListener oclBtnClear = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 myTextView.setText("");
             }
         };
+
         View.OnClickListener oclBtnStop = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -117,6 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+
         View.OnClickListener oclBtnGraph = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,8 +138,19 @@ public class MainActivity extends AppCompatActivity {
         BtnClear.setOnClickListener(oclBtnClear);
         BtnStop.setOnClickListener(oclBtnStop);
         BtnGraph.setOnClickListener(oclBtnGraph);
-
     } // END onCreate
+
+    @Override
+    protected void onStart() { // Запрос на включение Bluetooth
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onDestroy() { // Закрытие приложения
+        super.onDestroy();
+        if (myThreadConnectBTdevice != null) myThreadConnectBTdevice.cancel();
+    }
 
     void appendLog(final String Nmb, final String Voltage, final String Tmp) {
         runOnUiThread(new Runnable() {
@@ -143,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     void EndLine() {
         runOnUiThread(new Runnable() {
             @Override
@@ -152,12 +174,6 @@ public class MainActivity extends AppCompatActivity {
                 myTextView.append(end);
             }
         });
-    }
-
-    @Override
-    protected void onStart() { // Запрос на включение Bluetooth
-        super.onStart();
-
     }
 
     private void setup() { // Создание списка сопряжённых Bluetooth-устройств
@@ -170,6 +186,7 @@ public class MainActivity extends AppCompatActivity {
 
             for (BluetoothDevice device : pairedDevices) { // Добавляем сопряжённые устройства - Имя + MAC-адресс
                 pairedDeviceArrayList.add(device.getName() + "\n" + device.getAddress());
+
             }
 
             pairedDeviceAdapter = new ArrayAdapter<>(this, simple_list_item_1, pairedDeviceArrayList);
@@ -191,13 +208,8 @@ public class MainActivity extends AppCompatActivity {
                     myThreadConnectBTdevice.start();  // Запускаем поток для подключения Bluetooth
                 }
             });
-        }
-    }
 
-    @Override
-    protected void onDestroy() { // Закрытие приложения
-        super.onDestroy();
-        if (myThreadConnectBTdevice != null) myThreadConnectBTdevice.cancel();
+        }
     }
 
     @Override
@@ -214,7 +226,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // ============================================================================
+    public static double ParsingVoltage(short Voltage) {
+
+        return (Math.round((float) (Voltage * 1.07386 + 200))) / 100.;// Формула получения напряжения
+    }
+
+    public static short ParsingTmp(short Tmp) {
+
+        return (short) (Math.abs(Tmp) - 82);// Формула получения темпрературы
+    }
+// ============================================================================
+    public class ViewDataLog extends TimerTask {
+        @Override
+        public void run() {
+            if (!Pause) {
+                for (int i = 1; i < 161; i++) {
+                    if (ArrayBattery[i][0] > 0) {
+                        appendLog(String.valueOf((int) ArrayBattery[i][0]), String.valueOf(ArrayBattery[i][1]), String.valueOf((int) ArrayBattery[i][2]));
+                    }
+                }
+                EndLine();
+            }
+        }
+    }
+// ============================================================================
+    public class ViewData extends Thread {
+
+        @Override
+        public void run() {
+            while (true) {
+                mMyTimerTask = new ViewDataLog();
+                t.schedule(mMyTimerTask, delay);
+                try {
+                    Thread.sleep(2300 + delay);
+                } catch (InterruptedException e) {
+                    //Error
+                }
+            }
+        }
+
+    }
+// ============================================================================
     private class ThreadConnectBTdevice extends Thread { // Поток для коннекта с Bluetooth
 
         private BluetoothSocket bluetoothSocket = null;
@@ -227,7 +279,6 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-
 
         @Override
         public void run() { // Коннект
@@ -277,7 +328,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
         void cancel() {
 
             Toast.makeText(getApplicationContext(), "Close - BluetoothSocket", Toast.LENGTH_LONG).show();
@@ -290,8 +340,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
-
+// ============================================================================
     private class ThreadConnected extends Thread {    // Поток - приём  данных
 
         private final InputStream connectedInputStream;
@@ -344,7 +393,7 @@ public class MainActivity extends AppCompatActivity {
             while (Idx_Buf_In < Size_Buf_In);
         }
     }
-
+// ============================================================================
     private class ReadData extends Thread {
         @Override
         public void run() {
@@ -387,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
                             ArrayBattery[Buff_Mes[3]][2] = ParsingTmp(Buff_Mes[5]);
                             ArrayBattery[Buff_Mes[3]][3] = 0;
                         } catch (Exception e) {
-                            System.out.println("Something went wrong." +Buff_Mes[3] );
+                            System.out.println("Something went wrong." + Buff_Mes[3]);
                         }
 
                     }
@@ -407,44 +456,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
-    public static double ParsingVoltage(short Voltage) {
-
-        return (Math.round((float) (Voltage * 1.07386 + 200))) / 100.;// Формула получения напряжения
-    }
-
-    public static short ParsingTmp(short Tmp) {
-
-        return (short) (Math.abs(Tmp) - 82);// Формула получения темпрературы
-    }
-    public class ViewDataLog extends TimerTask {
-        @Override
-        public void run() {
-            if (!Pause) {
-                for (int i = 1; i < 161; i++) {
-                    if (ArrayBattery[i][0] > 0) {
-                        appendLog(String.valueOf((int) ArrayBattery[i][0]), String.valueOf(ArrayBattery[i][1]), String.valueOf((int) ArrayBattery[i][2]));
-                    }
-                }
-                EndLine();
-            }
-        }
-    }
-    public class ViewData extends Thread {
-
-        @Override
-        public void run () {
-            while (true) {
-                    mMyTimerTask = new ViewDataLog();
-                    t.schedule(mMyTimerTask, delay);
-                try {
-                    Thread.sleep(2300 + delay);
-                } catch (InterruptedException e) {
-                    //Error
-                }
-            }
-        }
-
-    }
-
 } // END

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">BlueToothDeb</string>
-    <string name="action_bluetooth">on/off</string>
     <string name="select_device">Выбор устройства</string>
     <string name="search_message">Поиск новых устройств…</string>
     <string name="title_paired_devices">Известные устройства</string>
@@ -8,24 +7,20 @@
     <string name="empty_device_name">&lt;Новое устройство&gt;</string>
     <string name="none_found">Не найдено</string>
     <string name="none_paired">Нет известных устройств</string>
-    <string name="V1">1</string>
     <string name="scan">Scan</string>
     <string name="Clear">Clear</string>
     <string name="stop">Stop</string>
     <string name="play">Play</string>
-    <string name="graff">Graff</string>
+    <string name="graff">Graph</string>
     <string name="Back">Back</string>
-    <string name="set_miny">Set_minY</string>
-    <string name="set_min_y">Set_Min_Y</string>
+    <string name="set_miny">U min</string>
     <string name="set">Set</string>
     <string name="back">Back</string>
     <string name="get">get</string>
-    <string name="Set_maxy">Set_maxy</string>
-    <string name="set_max_bal">set_max_bal</string>
-    <string name="set_view">Set_view</string>
+    <string name="Set_maxy">U max</string>
+    <string name="set_max_bal">XNumber</string>
+    <string name="set_view">XScale</string>
     <string name="dinamic_mode">Dinamic Mode</string>
-    <string name="set_minytmp">set_minytmp</string>
-    <string name="set_maxytmp">Set_maxytmp</string>
-    <string name="set_max_baltmp">set_max_baltmp</string>
-    <string name="set_viewtmp">set_viewtmp</string>
+    <string name="set_minytmp">t° Min</string>
+    <string name="set_maxytmp">t° Max</string>
 </resources>

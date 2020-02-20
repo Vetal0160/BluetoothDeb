@@ -4,6 +4,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.vetal.bluetoothdeb.GraphView;
 import com.vetal.bluetoothdeb.MainActivity;
+
 import java.util.List;
 
 
@@ -12,7 +13,7 @@ public class MyBarDataSet extends BarDataSet {
     MyBarDataSet(List<BarEntry> yVals, String label) {
         super(yVals, label);
     }
-
+   // тут для графика напряжения получаем цвет отображения.
     @Override
     public int getColor(int index) {
         float indexVal = getEntryForXIndex(index).getVal();
@@ -23,13 +24,11 @@ public class MyBarDataSet extends BarDataSet {
                     if (indexVal <= (GraphView.med / GraphView.del + 0.05) && indexVal >= (GraphView.med / GraphView.del - 0.05)) {
                         if (indexVal == GraphView.min)
                             return mColors.get(5);
-                        else  if (indexVal == GraphView.max){
+                        else if (indexVal <= GraphView.max) {
                             return mColors.get(6);
-                        }
-                        else
-                        return mColors.get(1);
-                    }
-                    else if (indexVal < (GraphView.med / GraphView.del)) {
+                        } else
+                            return mColors.get(1);
+                    } else if (indexVal < (GraphView.med / GraphView.del)) {
                         MainActivity.ArrayBattery2[index + 1][4] = 1;
                         return mColors.get(9);
                     } else if (indexVal > GraphView.med / GraphView.del) {
@@ -44,13 +43,11 @@ public class MyBarDataSet extends BarDataSet {
                         MainActivity.ArrayBattery2[index + 1][4] = 0;
                         if (indexVal == GraphView.min)
                             return mColors.get(5);
-                        else  if (indexVal == GraphView.max){
+                        else if (indexVal == GraphView.max) {
                             return mColors.get(6);
-                        }
-                        else
+                        } else
                             return mColors.get(1);
-                    }
-                    else if (indexVal < (GraphView.med / GraphView.del)) {
+                    } else if (indexVal < (GraphView.med / GraphView.del)) {
                         MainActivity.ArrayBattery2[index + 1][4] = 1;
                         return mColors.get(9);
                     } else if (indexVal > GraphView.med / GraphView.del) {
@@ -62,7 +59,7 @@ public class MyBarDataSet extends BarDataSet {
             case 2:
                 if (indexVal > 0)
                     if (MainActivity.ArrayBattery2[index + 1][4] == 0)
-                    return mColors.get(2);
+                        return mColors.get(2);
                     else if (MainActivity.ArrayBattery2[index + 1][4] == 1)
                         return mColors.get(10);
                 break;

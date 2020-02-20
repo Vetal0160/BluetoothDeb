@@ -2,7 +2,6 @@ package com.vetal.bluetoothdeb.util;
 
 import android.content.Context;
 
-
 import com.vetal.bluetoothdeb.GraphView;
 import com.vetal.bluetoothdeb.R;
 import com.github.mikephil.charting.charts.BarChart;
@@ -11,13 +10,14 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class MPUtil{
+public class MPUtil {
 
     private static int textSize = 10;
-
+    // построение графика напряжения
     public static ArrayList<BarDataSet> getDataSet(Context context, List<Float> dataList) {
 
         ArrayList<BarDataSet> dataSets = new ArrayList<>();
@@ -39,7 +39,7 @@ public class MPUtil{
                 context.getResources().getColor(R.color.color20),
                 context.getResources().getColor(R.color.color21),
                 context.getResources().getColor(R.color.color22),
-                context.getResources().getColor(R.color.color23)};
+                context.getResources().getColor(R.color.color23)};// Список цветов
 
         BarDataSet barDataSet = new MyBarDataSet(valueSet, "");
         barDataSet.setColors(colors);
@@ -50,7 +50,7 @@ public class MPUtil{
 
         return dataSets;
     }
-
+    // построение графика температуры
     public static ArrayList<BarDataSet> getDataSetTmp(Context context, List<Float> dataList) {
 
         ArrayList<BarDataSet> dataSets = new ArrayList<>();
@@ -93,8 +93,7 @@ public class MPUtil{
         }
         return xAxis;
     }
-
-
+    // задаем параметры  графика напряжения
     public static void drawChart(final Context context, BarChart chart, BarData data) {
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -131,11 +130,13 @@ public class MPUtil{
         chart.setVisibleXRange(GraphView.getViewSize());
         chart.getAxisLeft().setStartAtZero(false);
         chart.getAxisRight().setStartAtZero(false);
-        if (Setup.Checked){
-            chart.getAxisLeft().setAxisMinValue((float)(GraphView.min - 0.1));
-            chart.getAxisLeft().setAxisMaxValue((float)(GraphView.max + 0.05));
-        }
-        else {
+        // установка минимального и максимаьлного значения по шкале "у" если Checked = true ,то
+        // устанавливается минимальное и максимальное значение от полученных данных если False ,тогда
+        // минимальное и максимальное значение будет по умолчанию.
+        if (Setup.Checked) {
+            chart.getAxisLeft().setAxisMinValue((float) (GraphView.min - 0.1));
+            chart.getAxisLeft().setAxisMaxValue((float) (GraphView.max + 0.15));
+        } else {
             chart.getAxisLeft().setAxisMinValue(GraphView.getAxisMinValue());
             chart.getAxisLeft().setAxisMaxValue(GraphView.getAxisMaxValue());
         }
@@ -143,6 +144,7 @@ public class MPUtil{
         chart.setDrawGridBackground(false);
         chart.setDoubleTapToZoomEnabled(false);
     }
+    // задаем параметры  графика напряжения
     public static void drawChartTMP(final Context context, BarChart chart_tmp, BarData data) {
         XAxis xAxis = chart_tmp.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -179,11 +181,10 @@ public class MPUtil{
         chart_tmp.setVisibleXRange(GraphView.getViewSize());
         chart_tmp.getAxisLeft().setStartAtZero(false);
         chart_tmp.getAxisRight().setStartAtZero(false);
-        if (Setup.Checked){
+        if (Setup.Checked) {
             chart_tmp.getAxisLeft().setAxisMinValue(GraphView.mintmp - 2);
             chart_tmp.getAxisLeft().setAxisMaxValue(GraphView.maxtmp + 1);
-        }
-        else {
+        } else {
             chart_tmp.getAxisLeft().setAxisMinValue(GraphView.getAxisMinValueTmp());
             chart_tmp.getAxisLeft().setAxisMaxValue(GraphView.getAxisMaxValueTmp());
         }

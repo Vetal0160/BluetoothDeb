@@ -13,7 +13,7 @@ public class MyBarDataSetTmp extends BarDataSet {
     MyBarDataSetTmp(List<BarEntry> yVals, String label) {
         super(yVals, label);
     }
-
+    // тут для графика температуры получаем цвет отображения.
     @Override
     public int getColor(int index) {
         float indexVal = getEntryForXIndex(index).getVal();
@@ -24,11 +24,10 @@ public class MyBarDataSetTmp extends BarDataSet {
                     if (indexVal <= (GraphView.medtmp / GraphView.del + 3) && indexVal >= (GraphView.medtmp / GraphView.del - 3))
                         if (indexVal == GraphView.mintmp)
                             return mColors.get(5);
-                        else  if (indexVal == GraphView.maxtmp){
+                        else if (indexVal == GraphView.maxtmp) {
                             return mColors.get(6);
-                        }
-                        else
-                        return mColors.get(1);
+                        } else
+                            return mColors.get(1);
                     else if (indexVal < (GraphView.medtmp / GraphView.del)) {
                         MainActivity.ArrayBattery2[index + 1][5] = 1;
                         return mColors.get(9);
@@ -43,11 +42,10 @@ public class MyBarDataSetTmp extends BarDataSet {
                     if (indexVal <= (GraphView.medtmp / GraphView.del + 3) && indexVal >= (GraphView.medtmp / GraphView.del - 3))
                         if (indexVal == GraphView.mintmp)
                             return mColors.get(5);
-                        else  if (indexVal == GraphView.maxtmp){
+                        else if (indexVal == GraphView.maxtmp) {
                             return mColors.get(6);
-                        }
-                        else
-                        return mColors.get(1);
+                        } else
+                            return mColors.get(1);
                     else if (indexVal < (GraphView.medtmp / GraphView.del)) {
                         MainActivity.ArrayBattery2[index + 1][5] = 1;
                         return mColors.get(9);

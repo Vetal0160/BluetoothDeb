@@ -228,12 +228,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static double ParsingVoltage(short Voltage) {
 
-        return (Math.round((float) (Voltage * 1.07386 + 200))) / 100.;// Формула получения напряжения
+        return (Math.round((float) (Voltage / 0.093612) + 2000)) / 1000.;// Формула получения напряжения
     }
 
     public static short ParsingTmp(short Tmp) {
 
-        return (short) (Math.abs(Tmp) - 82);// Формула получения темпрературы
+        return (short) ((Math.abs(Tmp)/ 1.416666) - 50);// Формула получения темпрературы
     }
 // ============================================================================
     public class ViewDataLog extends TimerTask {
